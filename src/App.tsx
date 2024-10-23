@@ -1,25 +1,28 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import BaseLayout from './layouts/BaseLayout';
+import Home from './pages/home/Home';
+import Search from './pages/search/Search';
+import RestaurantPage from './pages/restaurant/RestaurantPage';
+import AddRestaurant from './pages/restaurant/AddRestaurant';
+import Login from './pages/member/Login';
+import Register from './pages/member/Register';
+import { Routes, Route } from 'react-router-dom'
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BaseLayout>
+      <Routes>
+        <Route path='/' element={<Home/>}/>
+        <Route path='/searchPage' element={<Search/>}/>
+        <Route path='/restaurant/:id' element={<RestaurantPage/>}/>
+        <Route path='/restaurant/add' element={<AddRestaurant />}/>
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+      </Routes>
+    </BaseLayout>
   );
 }
 

@@ -1,0 +1,18 @@
+@media (max-width: 480px) {
+    .footer {
+      width: 100%;
+    }
+    .header {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 480px) { 
+    .footer {
+      width: 480px;
+    }
+    .header {
+      width: 480px;
+    }
+
+  }
