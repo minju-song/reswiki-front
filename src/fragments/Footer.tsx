@@ -12,9 +12,8 @@ const FooterContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-around;
-    border-radius: 1rem 1rem 0 0;
     border: 1px solid rgb(233 233 236);
-    background-color: #00712D;
+    // background-color: #00712D;
 `;
 
 function Footer() {
@@ -22,11 +21,16 @@ function Footer() {
 
 
     const loginHandler = async() => {
-        navigate('/login');
+        if(localStorage.getItem('access_token') === null) {
+            navigate('/login');
+        }
+        else {
+            navigate('/mypage');
+        }
     }
 
     return (
-        <FooterContainer className="footer">
+        <FooterContainer className="footer bg-gray-300">
             <a href="/">
                 <img src="/assets/img/icon/menu.png" />
             </a>

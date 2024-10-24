@@ -83,12 +83,15 @@ function Register() {
         }
     }
 
+    // 회원 가입 진행
+    // 빈칸 경우의 수 처리
     const handleRegisterClick = async() => {
-        if(idFlag && passwordFlag && passwordCkFlag) {
+        if(idFlag && passwordFlag && passwordCkFlag && (memberNickname !== '')) {
             try {
                 const response = (await join(memberId, memberPassword, memberNickname));
                 if(response.status === 200) {
                     console.log("회원가입 완료");
+                    navigate("/login")
                 }
                 else console.log("불가");
             } catch {
@@ -159,7 +162,7 @@ function Register() {
                     placeholder=" " />
                 <label
                     htmlFor="memberNickname"
-                    className="absolute text-sm text-primary-dark duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">이름</label>
+                    className="absolute text-sm text-primary-dark duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">닉네임</label>
             </div>
             <div
                 className="flex items-center justify-center h-[50px] text-sm cursor-pointer text-green-700 font-bold bg-primary-default rounded-[0.25rem]"

@@ -17,7 +17,7 @@ const HeaderNav = styled.nav`
     height: 50px;
     top: 0;
     box-sizing: border-box;
-    background-color: white;
+    // background-color: white;
 `;
 
 const Logo = styled.img`
@@ -31,7 +31,7 @@ const LogoDiv =styled.div`
 
 const Href = styled.a`
     text-decoration-line: none;
-    color: black;
+    // color: black;
 `;
 
 const BannerBox = styled.div`
@@ -43,7 +43,7 @@ const BannerBox = styled.div`
 
 const ListTitle = styled.h3`
     margin: 1rem 1rem 0 1rem;
-    font-weight: 400;
+    // font-weight: 400;
 `;
 
 const Blocks = styled.div`
@@ -102,6 +102,11 @@ function Home() {
         }
     };
 
+    // 검색 페이지 이동
+    const handleSearchClick = () => {
+        navigate('/searchPage')
+    }
+
     // 상세 페이지 이동
     const restaurantPage = (id:string) => {
         navigate(`/restaurant/${id}`);
@@ -114,7 +119,7 @@ function Home() {
 
     return (
         <div>
-            <HeaderNav className="header">
+            {/* <HeaderNav className="header bg-white">
                 <LogoDiv>
                     <Href href="/">
                     <Logo src="/assets/img/logo.jpg" />
@@ -125,28 +130,80 @@ function Home() {
                        <img src="/assets/img/icon/search.png" />
                     </Href>
                 </LogoDiv>
-            </HeaderNav>
+            </HeaderNav> */}
 
-            <BannerBox>
-            </BannerBox>
-        
+<div className="navbar bg-base-100">
+  <div className="navbar-start">
+    <div className="dropdown">
+      <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M4 6h16M4 12h16M4 18h7" />
+        </svg>
+      </div>
+      <ul
+        tabIndex={0}
+        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+        <li><a>Homepage</a></li>
+        <li><a>Portfolio</a></li>
+        <li><a>About</a></li>
+      </ul>
+    </div>
+  </div>
+  <div className="navbar-center">
+    <a href="/" className="btn btn-ghost text-xl">맛 집 위 키</a>
+  </div>
+  <div className="navbar-end">
+    <button onClick={handleSearchClick} className="btn btn-ghost btn-circle">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    </button>
+  </div>
+</div>
+
+            {/* <BannerBox>
+            </BannerBox> */}
+        {/* 
             <div id="newList">
-                <ListTitle>⚡최근 등록된 맛집 New 5</ListTitle>
-                <Blocks>
+                <ListTitle>⚡최근 등록된 맛집 New 5</ListTitle> */}
+                {/* <Blocks>
                 {loading && 
                     <div> 로 딩 중</div>
                 }
                 {restaurants.map((item) => (
-                    <ResBlock key={item.restaurantId} onClick={() =>restaurantPage(item.restaurantId)}>
-                        <ResImg src={PHOTO_API_URL+`?photo_reference=${item.restaurantImg}&maxheight=100&key=${API_KEY}`}/>
-                        <ResInfo>
-                            <ResName>{item.restaurantName}</ResName>
-                            <ResAddr1>{item.restaurantAddr1}</ResAddr1>
-                        </ResInfo>
-                    </ResBlock>
+                    // <div className="carousel-item">
+                    //     <img src={PHOTO_API_URL+`?photo_reference=${item.restaurantImg}&maxheight=100&key=${API_KEY}`}/>
+                    // </div>
+                    <div></div>
+
+                    // <ResBlock key={item.restaurantId} onClick={() =>restaurantPage(item.restaurantId)}>
+                    //     <ResImg src={PHOTO_API_URL+`?photo_reference=${item.restaurantImg}&maxheight=100&key=${API_KEY}`}/>
+                    //     <ResInfo>
+                    //         <ResName>{item.restaurantName}</ResName>
+                    //         <ResAddr1>{item.restaurantAddr1}</ResAddr1>
+                    //     </ResInfo>
+                    // </ResBlock>
                 ))}
-                </Blocks>
-            </div>
+                </Blocks> */}
+            {/* </div> */}
         </div>
     );
 }

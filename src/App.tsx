@@ -8,6 +8,7 @@ import RestaurantPage from './pages/restaurant/RestaurantPage';
 import AddRestaurant from './pages/restaurant/AddRestaurant';
 import Login from './pages/member/Login';
 import Register from './pages/member/Register';
+import Mypage from './pages/member/Mypage';
 import { Routes, Route } from 'react-router-dom'
 
 
@@ -21,6 +22,7 @@ function App() {
         <Route path='/restaurant/add' element={<AddRestaurant />}/>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/mypage' element={<Mypage />} />
       </Routes>
     </BaseLayout>
   );

@@ -11,13 +11,14 @@ const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const HeaderNav = styled.nav`
     display:flex;
-    justify-content: space-between;
+    justify-content: center;
     position: fixed;
     width: 480px;
     height: 50px;
     top: 0;
     box-sizing: border-box;
     background-color: white;
+    align-items: center;
 `;
 
 const LogoDiv =styled.div`
@@ -110,32 +111,12 @@ function RestaurantPage() {
         }
     }, []);
 
-    // useEffect(() => {
-    //     if (restaurant) {
-
-    //     }
-    // }, [restaurant]);
-
-    // useEffect(() => {
-    //     if (reviews.length > 0) {
-
-    //         console.log(reviews);
-    //     }
-    // }, [reviews]);
-
     return (
         <div>
             <HeaderNav>
-                <LogoDiv>
-                    <Href href="/">
-                        <Logo>맛집위키</Logo>
-                    </Href>
-                </LogoDiv>
-                <LogoDiv>
-                    <Href style={{fontSize:"13px"}} href="/searchPage">
-                       <img src="/assets/img/icon/search.png" />
-                    </Href>
-                </LogoDiv>
+                <Href href="/">
+                    <Logo>맛집위키</Logo>
+                </Href>
             </HeaderNav>
             <ResultDiv>
                 {loading && <Notification>로 딩 중</Notification>}
