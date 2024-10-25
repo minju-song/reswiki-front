@@ -24,31 +24,6 @@ const Notification = styled.div`
     text-align: center;
 `;
 
-// 식당 리스트 큰 박스
-const Restaurants = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
-const Restaurant = styled.div`
-    height: 7rem;
-    width: 80%;
-    margin-bottom: 1rem;
-    display: flex;
-    box-shadow: 3px 3px 3px #cfcbcba6;
-`;
-
-const ResImg = styled.img`
-    height: 100%;
-    width: 125px;
-    flex: 2;
-`;
-
-const ResInfo = styled.div`
-    flex: 3;
-    padding-left: 1rem;
-`;
 
 function Search() {
     const [searchMonter, setSearchMonter] = useState("");
@@ -100,17 +75,25 @@ function Search() {
                         <Notification>🔎 찾고 싶은 식당 검색 🔎</Notification>
                     ) :
                 (restaurants.length > 0 ?  (
-                    <Restaurants>
+                    <div>
                         {restaurants.map((item, index) => (
-                            <Restaurant key={item.restaurantId} onClick={() =>restaurantPage(item.restaurantId)}>
-                                <ResImg src={PHOTO_API_URL+`?photo_reference=${item.restaurantImg}&maxheight=100&key=${API_KEY}`} />
-                                <ResInfo>
-                                    <h4>{item.restaurantName}</h4>
-                                    <h5>{item.restaurantAddr1}</h5>
-                                </ResInfo>
-                            </Restaurant>
+                            <div key={item.restaurantId} className="card card-side bg-base-100 shadow-xl" 
+                            style={{maxHeight:"10rem", marginBottom:"1rem"}} onClick={() =>restaurantPage(item.restaurantId)}>
+                                <figure>
+                                    <img
+                                    src={PHOTO_API_URL+`?photo_reference=${item.restaurantImg}&maxheight=100&key=${API_KEY}`}
+                                    alt={item.restaurantName}
+                                    style={{height:"100%"}} />
+                                </figure>
+                                <div className="card-body">
+                                    <h2 className="card-title">{item.restaurantName}</h2>
+                                    <p>{item.restaurantAddr1}</p>
+                                    <div className="card-actions justify-end">
+                                    </div>
+                                </div>
+                            </div>
                         ))}
-                    </Restaurants>
+                    </div>
                 ) :
                  (
                     <Notification>

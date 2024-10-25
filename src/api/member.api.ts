@@ -48,6 +48,15 @@ export const login = async(
     return apiResponse;
 }
 
+// 로그아웃
+export const logout = async(): Promise<any> => {
+    let url = `${baseUrl}/logout`;
+
+    const apiResponse = (await post(url));
+
+    return apiResponse;
+}
+
 // 아이디 받아오기
 export const getMyInfo = async (): Promise<ApiResponse<any>> => {
     let url = `${baseUrl}/myInfo`;

@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 
+const StartNav = styled.div`
+    width: 100%;
+    justify-content: flex-start;
+`;
+
 
 // 헤더 네비게이션
 const SearchNav = styled.nav`
@@ -69,17 +74,19 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ searchMonter,setSearc
     }, [searchMonter]);
 
     return (
-        <SearchNav>
-            <BackBtn onClick={handleBack}>
-                <BackIcon src="/assets/img/icon/back.png"/>
-            </BackBtn>
-            <SearchDiv>
-                <img src="/assets/img/icon/search.png" />
-                <SearchInput placeholder={inputtext}
+        <div className="navbar bg-base-100">
+            <button onClick={handleBack}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M15 6l-6 6l6 6"></path> </svg> 
+            </button>
+            <StartNav>
+                <input
+                type="text"
+                placeholder={inputtext}
                 value={searchMonter}
-                onChange={(e) => setSearchMonter(e.target.value)} />
-            </SearchDiv>
-        </SearchNav>
+                onChange={(e) => setSearchMonter(e.target.value)}
+                className="input input-bordered input-success w-full" />
+            </StartNav>
+        </div>
     );
 }
 

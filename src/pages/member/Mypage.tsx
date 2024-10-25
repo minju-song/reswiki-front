@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { myPage } from "../../api/member.api";
+import { myPage, logout } from "../../api/member.api";
 import { MyPageDto } from "../../dto/MemberDto";
+import { useNavigate } from 'react-router-dom';
 
 const HeaderNav = styled.nav`
     display:flex;
@@ -51,12 +52,31 @@ const BtnDiv = styled.div`
 `;
 
 function Mypage() {
+    const navigate = useNavigate();
     const [member, setMember] = useState<MyPageDto>();
 
+    // 회원정보 받아오기
     const getMember = async() => {
         const response = await myPage();
         setMember(response.response);
     }
+
+    // 로그아웃
+    const handleLogoutClick = async () => {
+        try {
+            const response = await logout();
+            if (response.status === 200) {
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('logged_email');
+                navigate('/');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
+
+
     useEffect(() => {
         getMember();
     }, [])
@@ -71,7 +91,7 @@ function Mypage() {
                     <Nickname className="underline decoration-green-500 decoration-wavy text-primary-content">{member?.memberNickname}</Nickname>
                     <MemberEmail>{member?.memberId}</MemberEmail>
                     <BtnDiv>
-                        <button className="btn btn-success">로그아웃</button>
+                        <button className="btn btn-success" onClick={handleLogoutClick}>로그아웃</button>
                         <button className="btn btn-outline btn-success">회원탈퇴</button>
                     </BtnDiv>
                 </MyInfo>
