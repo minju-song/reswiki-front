@@ -1,198 +1,136 @@
 import styled from "styled-components";
-import '../../css/headerAndFooter.css';
-import { useNavigate } from 'react-router-dom';
-import {getNewList} from "../../api/restaurant.api";
 import { useEffect, useState } from "react";
-import { RestaurantDto } from "../../dto/RestaurantDto";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+import { getRestaurants } from "../../api/restaurant.api";
+import { get, post, del, patch } from "../../utils/serverHelper";
 
-const PHOTO_API_URL = 'https://maps.googleapis.com/maps/api/place/photo';
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+
+const PHOTO_API_URL = "https://maps.googleapis.com/maps/api/place/photo";
 const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+// Restaurant 타입 정의
+interface Restaurant {
+  restaurantId: string;
+  restaurantName: string;
+  restaurantImg: string;
+  restaurantAddr1: string;
+  restaurantAddr2: string;
+  restaurantStar: number;
+}
 
+function Card({ restaurant }: { restaurant: Restaurant }) {
+  const [cardHover, setCardHover] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
-
-const HeaderNav = styled.nav`
-    display:flex;
-    justify-content: space-between;
-    position: fixed;
-    height: 50px;
-    top: 0;
-    box-sizing: border-box;
-    // background-color: white;
-`;
-
-const Logo = styled.img`
-    width: 2rem;
-`;
-
-const LogoDiv =styled.div`
-    display: flex;
-    align-items: center;
-`;
-
-const Href = styled.a`
-    text-decoration-line: none;
-    // color: black;
-`;
-
-const BannerBox = styled.div`
-    height: 150px;
-    background-image: url(assets/img/home_banner.jpg);
-    background-size: cover;
-    margin-top: 50px;
-`;
-
-const ListTitle = styled.h3`
-    margin: 1rem 1rem 0 1rem;
-    // font-weight: 400;
-`;
-
-const Blocks = styled.div`
-    display: flex;
-    overflow-x: scroll;
-    height: 17rem;
-    scrollbar-width: none;
-`;
-
-const ResBlock = styled.div`
-    margin: 1rem;
-    height: 12rem;
-    width: 10rem;
-    display: flex;
-    flex-direction: column;
-
-`;
-
-const ResImg = styled.img`
-    flex: 1;
-    box-shadow: 3px 3px 3px #cfcbcba6;
-`;
-
-const ResInfo = styled.div`
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-`;
-
-const ResName = styled.h4`
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-`;
-
-const ResAddr1 = styled.div`
-    font-size: 0.9rem;
-`;
-
-
-function Home() {
-    const [ restaurants, setRestaurants ] = useState<RestaurantDto[]>([]);
-    const [ loading, setLoading ] = useState<boolean>(false);
-    const navigate = useNavigate();
-
-
-    const fetchData = async()=> {
-        try{
-            setLoading(true);
-            const response = (await getNewList()).response.restaurants;
-            console.log(response);
-            // loadImg(newData);
-            setRestaurants(response);   
-            setLoading(false);
-        } catch(error) {
-            console.error('데이터 가져오기 실패:', error);
+  useEffect(() => {
+    const fetchImage = async () => {
+      const fetchImage = async () => {
+        try {
+          const url = `${SERVER_URL}/images?imageName=${restaurant.restaurantImg}`;
+          setImageUrl(url);
+        } catch (error) {
+          console.error("이미지를 가져오는 중 오류 발생:", error);
         }
+      };
+
+      fetchImage();
     };
 
-    // 검색 페이지 이동
-    const handleSearchClick = () => {
-        navigate('/searchPage')
-    }
+    fetchImage(); // 이미지 요청
+  }, [restaurant.restaurantImg]);
 
-    // 상세 페이지 이동
-    const restaurantPage = (id:string) => {
-        navigate(`/restaurant/${id}`);
-        
-    }
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    return (
-        <div>
-            <div className="navbar bg-base-100">
-                <div className="navbar-start">
-                    <div className="dropdown">
-                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-                            <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M4 6h16M4 12h16M4 18h7" />
-                            </svg>
-                        </div>
-                        <ul
-                            tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                            <li><a>Homepage</a></li>
-                            <li><a>Portfolio</a></li>
-                            <li><a>About</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="navbar-center">
-                    <a href="/" className="btn btn-ghost text-xl">맛 집 위 키</a>
-                </div>
-                <div className="navbar-end">
-                    <button onClick={handleSearchClick} className="btn btn-ghost btn-circle">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    </button>
-                </div>
-            </div>
-
-            {/* <BannerBox>
-            </BannerBox> */}
-        {/* 
-            <div id="newList">
-                <ListTitle>⚡최근 등록된 맛집 New 5</ListTitle> */}
-                {/* <Blocks>
-                {loading && 
-                    <div> 로 딩 중</div>
-                }
-                {restaurants.map((item) => (
-                    // <div className="carousel-item">
-                    //     <img src={PHOTO_API_URL+`?photo_reference=${item.restaurantImg}&maxheight=100&key=${API_KEY}`}/>
-                    // </div>
-                    <div></div>
-
-                    // <ResBlock key={item.restaurantId} onClick={() =>restaurantPage(item.restaurantId)}>
-                    //     <ResImg src={PHOTO_API_URL+`?photo_reference=${item.restaurantImg}&maxheight=100&key=${API_KEY}`}/>
-                    //     <ResInfo>
-                    //         <ResName>{item.restaurantName}</ResName>
-                    //         <ResAddr1>{item.restaurantAddr1}</ResAddr1>
-                    //     </ResInfo>
-                    // </ResBlock>
-                ))}
-                </Blocks> */}
-            {/* </div> */}
+  return (
+    <div
+      className="relative h-[230px] rounded-3xl perspective"
+      onMouseEnter={() => setCardHover(true)} // 마우스가 카드에 들어올 때
+      onMouseLeave={() => setCardHover(false)} // 마우스가 카드에서 나갈 때
+    >
+      {cardHover ? (
+        <div className="bg-[#FCCD2A] py-3 px-[14px]  h-full rounded-3xl absolute inset-0 transition-transform duration-700 transform">
+          <div className="font-Spoqa text-xl font-bold">
+            {restaurant.restaurantName}
+          </div>
+          <div className="font-Spoqa text-sm font-light">
+            {restaurant.restaurantAddr1}
+          </div>
+          <div className="font-Spoqa text-sm font-light">
+            {restaurant.restaurantAddr2}
+          </div>
         </div>
-    );
+      ) : (
+        <div
+          className="bg-gray-600 h-full rounded-3xl absolute inset-0 transition-transform duration-700 transform"
+          style={{
+            backgroundImage: `url(${imageUrl})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backfaceVisibility: "hidden", // 앞면이 보이지 않도록 설정
+          }}
+        ></div>
+      )}
+    </div>
+  );
+}
+
+function Home() {
+  const itemsPerPage = 8; // 한 페이지에 8개 카드
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await getRestaurants();
+      console.log(response.data.restaurants);
+      setRestaurants(response.data.restaurants);
+    } catch (error) {
+      console.error("데이터 가져오기 실패:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return (
+    <div className="body">
+      <div className="w-full h-9">
+        <span>
+          <span className="emoji">🔥</span>현재 핫한 맛집이에요!
+        </span>
+      </div>
+      <div className="w-full h-[489px]">
+        <Swiper
+          spaceBetween={3}
+          onSlideChange={(swiper: any) => setPage(swiper.activeIndex)}
+        >
+          {/* 슬라이드 수 계산 */}
+          {Array.from({
+            length: Math.ceil(restaurants.length / itemsPerPage),
+          }).map((_, index) => (
+            <SwiperSlide key={index}>
+              <div className="grid grid-cols-4 gap-4">
+                {restaurants
+                  .slice(
+                    index * itemsPerPage,
+                    index * itemsPerPage + itemsPerPage
+                  )
+                  .map((item) => (
+                    <Card key={item.restaurantId} restaurant={item} />
+                  ))}
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </div>
+  );
 }
 
 export default Home;

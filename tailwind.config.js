@@ -1,10 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {},
+    fontFamily: {
+      Spoqa: ["Spoqa Han Sans Neo"],
+    },
   },
   // add daisyUI plugin
   plugins: [require("daisyui")],
@@ -20,5 +21,4 @@ module.exports = {
     logs: true, // Shows info about daisyUI version and used config in the console when building your CSS
     themeRoot: ":root", // The element that receives theme color CSS variables
   },
-}
-
+};

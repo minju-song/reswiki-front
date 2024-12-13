@@ -1,32 +1,35 @@
-import { ApiResponse } from './../dto/ApiResponse';
-import { get, post, del, patch } from '../utils/serverHelper';
+import { ApiResponse } from "./../dto/ApiResponse";
+import { get, post, del, patch } from "../utils/serverHelper";
 
-const baseUrl = '/restaurant';
+const baseUrl = "/restaurants";
 
 // 메인 식당리스트
-export const getNewList = async(): Promise<ApiResponse<any>> => {
-    const url = `${baseUrl}/getNewList`;
-    const apiResponse: ApiResponse<any> = (await get(url)).data as ApiResponse<any>;
-    
-    return apiResponse;
-}
+export const getRestaurants = async (): Promise<ApiResponse<any>> => {
+  const url = `${baseUrl}?size=10&page=1`;
+  const apiResponse: ApiResponse<any> = (await get(url))
+    .data as ApiResponse<any>;
 
-// 검색
-export const search = async(
-    keyword: string,
-    page: number,
-    size: number
+  return apiResponse;
+};
+
+// 검색 - pre
+export const search = async (
+  keyword: string,
+  page: number,
+  size: number
 ): Promise<ApiResponse<any>> => {
-    const url = `${baseUrl}/search?keyword=${keyword}&page=${page}&size=${size}`;
-    const apiResponse: ApiResponse<any> = (await get(url)).data as ApiResponse<any>;
+  const url = `${baseUrl}/search?keyword=${keyword}&page=${page}&size=${size}`;
+  const apiResponse: ApiResponse<any> = (await get(url))
+    .data as ApiResponse<any>;
 
-    return apiResponse;
-}
+  return apiResponse;
+};
 
-// 상세 페이지
-export const getRestaurant = async(id: string): Promise<ApiResponse<any>> => {
-    const url = `${baseUrl}/getRestaurant?id=${id}`;
-    const ApiResponse: ApiResponse<any> = (await get(url)).data as ApiResponse<any>;
+// 상세 페이지 - pre
+export const getRestaurant = async (id: string): Promise<ApiResponse<any>> => {
+  const url = `${baseUrl}/getRestaurant?id=${id}`;
+  const ApiResponse: ApiResponse<any> = (await get(url))
+    .data as ApiResponse<any>;
 
-    return ApiResponse;
-}
+  return ApiResponse;
+};
