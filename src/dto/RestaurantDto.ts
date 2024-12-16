@@ -23,10 +23,22 @@ export interface RestaurantDto {
   restaurantStar: number;
 }
 
-export interface SearchRestaurantResponse {
-  content: RestaurantDto[];
+// Restaurant 타입 정의
+export interface Restaurant {
+  restaurantId: string;
+  restaurantName: string;
+  restaurantImg: string;
+  restaurantAddr1: string;
+  restaurantAddr2: string;
+  restaurantStar: number;
+}
+
+export interface ListRestaurantResponse {
+  restaurants: Restaurant[];
   totalPages: number;
   totalElements: number;
+  number: number;
+  size: number;
 }
 
 export interface RestaurantAndReviews {

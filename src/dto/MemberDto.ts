@@ -1,4 +1,4 @@
 export interface MyPageDto {
-    memberId: string,
-    memberNickname: string
+  memberId: string;
+  memberNickname: string;
 }

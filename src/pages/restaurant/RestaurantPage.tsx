@@ -92,7 +92,7 @@ function RestaurantPage() {
 
   const fetchRestaurantById = async (id: string) => {
     try {
-      const result = (await getRestaurant(id)).response;
+      const result = (await getRestaurant(id)).data;
       setRestaurant(result);
       setReviews(result.reviews);
       setLoading(false);

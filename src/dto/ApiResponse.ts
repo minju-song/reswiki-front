@@ -3,5 +3,4 @@ export interface ApiResponse<T> {
   message: string | null;
   data: T | null;
   success: boolean;
-  response: T | null;
 }

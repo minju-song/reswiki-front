@@ -88,10 +88,10 @@ function Home() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = (await getRestaurants()).response.restaurants;
-      console.log(response);
+      // const response = (await getRestaurants()).response.restaurants;
+      // console.log(response);
       // loadImg(newData);
-      setRestaurants(response);
+      // setRestaurants(response);
       setLoading(false);
     } catch (error) {
       console.error("데이터 가져오기 실패:", error);

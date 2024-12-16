@@ -58,7 +58,7 @@ function Mypage() {
   // 회원정보 받아오기
   const getMember = async () => {
     const response = await myPage();
-    setMember(response.response);
+    // setMember(response.response);
   };
 
   // 로그아웃
