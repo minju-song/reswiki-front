@@ -5,7 +5,7 @@ import { LOCAL_STORAGE_KEYS } from "../../constants";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { authLogin } from "../../authSlice";
-import { googleLogin } from "../../api/auth.api";
+import { handleOAuthLogin } from "../../utils/\bsocialUtil";
 
 function Login() {
   const navigate = useNavigate();
@@ -13,10 +13,6 @@ function Login() {
 
   const [memberId, setMemberId] = useState("");
   const [memberPassword, setMemberPassword] = useState("");
-
-  const handleFindPasswordClick = () => {
-    navigate("/login/find-password");
-  };
 
   const handleRegisterClick = () => {
     navigate("/register");
@@ -50,16 +46,6 @@ function Login() {
       }
     } else {
       alert("아이디와 비밀번호 모두 입력해주세요.");
-    }
-  };
-
-  const handleOAuthLogin = async (social: string) => {
-    if (social == "google") {
-      try {
-        const response = await googleLogin();
-      } catch (err) {
-        console.log(err);
-      }
     }
   };
 
@@ -118,9 +104,7 @@ function Login() {
         <div
           onClick={handleLoginClick}
           className="bg-[#FCCD2A] my-3 flex items-center justify-center h-[50px] text-sm cursor-pointer text-white font-bold rounded-[0.25rem]"
-        >
-          로그인
-        </div>
+        ></div>
         <div className="relative flex items-center w-full">
           <div className="flex-grow border-t border-[#C3C8CF]"></div>
           <span className="mx-4 text-white">OR</span>
@@ -129,21 +113,20 @@ function Login() {
         <div className="relative flex items-center justify-center w-full gap-4">
           <img
             className="w-9"
+            onClick={() => handleOAuthLogin("kakao")}
             src={`${process.env.PUBLIC_URL}/assets/img/icon/social/kakao.svg`}
           />
           <img
             className="w-9"
+            onClick={() => handleOAuthLogin("naver")}
             src={`${process.env.PUBLIC_URL}/assets/img/icon/social/naver.svg`}
           />
-          <a
-          // href={`${SERVER_URL}/oauth2/authorization/google`}
-          >
-            <img
-              className="w-9"
-              onClick={() => handleOAuthLogin("google")}
-              src={`${process.env.PUBLIC_URL}/assets/img/icon/social/google.svg`}
-            />
-          </a>
+
+          <img
+            className="w-9"
+            onClick={() => handleOAuthLogin("google")}
+            src={`${process.env.PUBLIC_URL}/assets/img/icon/social/google.svg`}
+          />
         </div>
       </div>
     </div>

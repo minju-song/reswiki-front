@@ -1,15 +1,9 @@
-import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { checkMemberId } from "../../api/member.api";
 import { join } from "../../api/member.api";
-
-const IdBtnTrue = styled.button`
-  background-color: green;
-`;
-const IdBtnFalse = styled.button`
-  background-color: red;
-`;
+import axios from "axios";
+import { handleOAuthLogin } from "../../utils/\bsocialUtil";
 
 function Register() {
   const navigate = useNavigate();
@@ -25,7 +19,6 @@ function Register() {
   const [memberId, setMemberId] = useState("");
   const [memberPassword, setMemberPassword] = useState("");
   const [passwordCk, setPasswordCk] = useState("");
-  const [memberNickname, setMemberNickname] = useState("");
 
   const emailCheck = async (email: string) => {
     return emailRegEx.test(email);
@@ -40,6 +33,7 @@ function Register() {
     if (await emailCheck(memberId)) {
       try {
         const response = await checkMemberId(memberId);
+        console.log(response);
         if (response.code === 200) {
           alert("사용 가능한 아이디입니다.");
           setIdFlag(true);
@@ -47,8 +41,12 @@ function Register() {
           alert("이미 사용하고 있는 아이디입니다.");
           setMemberId("");
         } else console.error("아이디 중복 조회 데이터 오류");
-      } catch {
-        console.error("아이디 중복 조회 실패");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error(error);
+          alert(error.response?.data.message);
+          setMemberId("");
+        }
       }
     } else {
       alert("올바른 이메일을 입력해주세요.");
@@ -61,12 +59,15 @@ function Register() {
     if (passwordRegEx.test(memberPassword)) {
       setPasswordFlag(true);
     } else {
-      alert("영문, 숫자, 특수문자 중 최소 2종류를 포함해야 합니다.");
+      alert(
+        "비밀번호는 8자 이상으로, 최소 하나의 영어 알파벳과 하나의 숫자 또는 특수문자를 포함해야 합니다."
+      );
       setPasswordFlag(false);
       setMemberPassword("");
     }
   };
 
+  // 비밀번호 체크 확인
   const handleCheckCkPassword = async () => {
     if (passwordCk === memberPassword) {
       setPasswordCkFlag(true);
@@ -80,15 +81,18 @@ function Register() {
   // 회원 가입 진행
   // 빈칸 경우의 수 처리
   const handleRegisterClick = async () => {
-    if (idFlag && passwordFlag && passwordCkFlag && memberNickname !== "") {
+    if (idFlag && passwordFlag && passwordCkFlag) {
       try {
-        const response = await join(memberId, memberPassword, memberNickname);
-        if (response.code === 200) {
+        const response = await join(memberId, memberPassword);
+        console.log(response);
+        if (response.code === 201) {
           navigate("/login");
         } else console.log("불가");
       } catch {
         console.error("에러");
       }
+    } else {
+      alert("모든 정보를 올바르게 입력하셨는 지 확인해주세요.");
     }
   };
 
@@ -108,7 +112,7 @@ function Register() {
           <div className="text-right text-[#8D8D8D] text-sm">
             회원이신가요?
             <br />
-            <button className="text-[#FCCD2A]" onClick={handleRegisterClick}>
+            <button className="text-[#FCCD2A]" onClick={handleLoginClick}>
               로그인
             </button>
           </div>
@@ -130,9 +134,21 @@ function Register() {
               placeholder="@포함"
             />
             <div className="w-1/4 flex items-center justify-end">
-              <button className="bg-[#FCCD2A] p-2 flex  text-sm cursor-pointer text-white font-bold rounded-[0.25rem]">
-                중복확인
-              </button>
+              {!idFlag ? (
+                <button
+                  className="bg-[#FCCD2A] p-2 flex  text-sm cursor-pointer text-white font-bold rounded-[0.25rem]"
+                  onClick={handleCheckId}
+                >
+                  중복확인
+                </button>
+              ) : (
+                <button
+                  className="bg-gray-500 p-2 flex  text-sm cursor-pointer text-white font-bold rounded-[0.25rem]"
+                  onClick={handleCheckId}
+                >
+                  사용가능
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -148,8 +164,9 @@ function Register() {
             id="password"
             value={memberPassword}
             onChange={(e) => setMemberPassword(e.target.value)}
+            onBlur={handleCheckPassword}
             className="block p-2.5 w-full text-sm text-primary-dark bg-white rounded-lg  appearance-none"
-            placeholder=" "
+            placeholder="8자 이상, 영어와 숫자/특수문자를 포함"
           />
         </div>
         <div className="flex flex-col">
@@ -184,21 +201,20 @@ function Register() {
         <div className="relative flex items-center justify-center w-full gap-4">
           <img
             className="w-9"
+            onClick={() => handleOAuthLogin("kakao")}
             src={`${process.env.PUBLIC_URL}/assets/img/icon/social/kakao.svg`}
           />
           <img
             className="w-9"
+            onClick={() => handleOAuthLogin("naver")}
             src={`${process.env.PUBLIC_URL}/assets/img/icon/social/naver.svg`}
           />
-          <a
-          // href={`${SERVER_URL}/oauth2/authorization/google`}
-          >
-            <img
-              className="w-9"
-              // onClick={() => handleOAuthLogin("google")}
-              src={`${process.env.PUBLIC_URL}/assets/img/icon/social/google.svg`}
-            />
-          </a>
+
+          <img
+            className="w-9"
+            onClick={() => handleOAuthLogin("google")}
+            src={`${process.env.PUBLIC_URL}/assets/img/icon/social/google.svg`}
+          />
         </div>
       </div>
     </div>

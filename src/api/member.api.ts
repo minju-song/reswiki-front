@@ -10,7 +10,7 @@ const baseUrl = "/members";
 export const checkMemberId = async (
   checkId: string
 ): Promise<ApiResponse<any>> => {
-  const url = `${baseUrl}/checkMemberId?checkId=${checkId}`;
+  const url = `${baseUrl}/check-email?checkId=${checkId}`;
   const apiResponse: ApiResponse<any> = (await get(url))
     .data as ApiResponse<any>;
 
@@ -20,18 +20,16 @@ export const checkMemberId = async (
 // 회원 가입
 export const join = async (
   memberId: string,
-  memberPassword: string,
-  memberNickname: string
-): Promise<ApiResponse<any>> => {
-  const url = `${baseUrl}/join`;
+  memberPassword: string
+): Promise<ApiResponse<MemberIdDto>> => {
+  const url = `${baseUrl}`;
   const body = {
     memberId,
     memberPassword,
-    memberNickname,
   };
 
-  const apiResponse: ApiResponse<any> = (await post(url, body))
-    .data as ApiResponse<any>;
+  const apiResponse: ApiResponse<MemberIdDto> = (await post(url, body))
+    .data as ApiResponse<MemberIdDto>;
 
   return apiResponse;
 };

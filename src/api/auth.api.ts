@@ -6,7 +6,16 @@ export const googleLogin = async (): Promise<any> => {
   const url = `${SERVER_URL}/oauth2/authorization/google`;
 
   window.location.href = url;
-  //   const apiResponse = await get(url);
+};
 
-  //   return apiResponse;
+export const kakaoLogin = async (): Promise<any> => {
+  const url = `${SERVER_URL}/oauth2/authorization/kakao`;
+
+  window.location.href = url;
+};
+
+export const naverLogin = async (): Promise<any> => {
+  const url = `${SERVER_URL}/oauth2/authorization/naver`;
+
+  window.location.href = url;
 };
