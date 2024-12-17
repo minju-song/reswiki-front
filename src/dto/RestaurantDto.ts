@@ -1,5 +1,3 @@
-import { ReviewDto } from "./ReviewDto";
-
 export interface RestaurantDto {
   // 가게 아이디
   restaurantId: string;
@@ -23,6 +21,7 @@ export interface RestaurantDto {
   restaurantStar: number;
 }
 
+// 리스트에 들어갈 식당
 export interface SimpleRestaurantDto {
   restaurantId: string;
   restaurantName: string;
@@ -32,6 +31,7 @@ export interface SimpleRestaurantDto {
   restaurantStar: number;
 }
 
+// 식당 리스트
 export interface ListRestaurantDto {
   restaurants: SimpleRestaurantDto[];
   totalPages: number;
@@ -40,11 +40,7 @@ export interface ListRestaurantDto {
   size: number;
 }
 
-export interface RestaurantAndReviews {
-  restaurants: RestaurantDto;
-  reviews: ReviewDto[];
-}
-
+// 구글 검색 후 받을 식당 데이터
 export interface GoogleSearchDto {
   formatted_address: string;
   formatted_phone_number: string;

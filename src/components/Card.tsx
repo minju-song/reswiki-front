@@ -1,3 +1,4 @@
+// 식당 카드
 import { useState, useEffect } from "react";
 import { SimpleRestaurantDto } from "../dto/RestaurantDto";
 import RestaurantModal from "./RestaurantModal";
@@ -5,10 +6,14 @@ import RestaurantModal from "./RestaurantModal";
 const API_URL = process.env.REACT_APP_API_URL;
 
 function Card({ restaurant }: { restaurant: SimpleRestaurantDto }) {
+  // 마우스 올려둔 상태인지 체크
   const [cardHover, setCardHover] = useState(false);
+  // 식당 이미지 url
   const [imageUrl, setImageUrl] = useState("");
+  // 모달 오픈 여부
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  // 가게 카드 이미지
   useEffect(() => {
     const fetchImage = async () => {
       const fetchImage = async () => {
@@ -26,6 +31,7 @@ function Card({ restaurant }: { restaurant: SimpleRestaurantDto }) {
     fetchImage();
   }, [restaurant.restaurantImg]);
 
+  // 모달
   const openModal = () => {
     setIsModalOpen(true);
   };

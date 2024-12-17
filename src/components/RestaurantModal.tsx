@@ -1,9 +1,11 @@
+// 식당 모달
 import { useEffect, useState } from "react";
 import { getRestaurant } from "../api/restaurant.api";
-import { getComments } from "../api/comment.api";
+import { getComments, deleteComment } from "../api/comment.api";
 import { RestaurantDto } from "../dto/RestaurantDto";
 import { CommentDto } from "../dto/CommentDto";
 import { LOCAL_STORAGE_KEYS } from "../constants";
+import Swal, { SweetAlertResult } from "sweetalert2";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -43,7 +45,39 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
     } catch (error) {}
   };
 
-  const handleDeleteComment = async () => {};
+  // 리뷰 삭제
+  const DeleteComment = async (commentId: number, index: number) => {
+    try {
+      const response = await deleteComment(commentId);
+      if (response.code === 200) {
+        Swal.fire({
+          title: `리뷰가 삭제되었습니다.`,
+          icon: "success",
+        }).then(() => {
+          comments?.splice(index, 1);
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 리뷰 삭제 모달
+  const handleDeleteComment = async (commentId: number, index: number) => {
+    Swal.fire({
+      title: `해당 리뷰를 삭제하겠습니까?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네!",
+      cancelButtonText: "아니요..",
+    }).then((result: SweetAlertResult) => {
+      if (result.isConfirmed) {
+        DeleteComment(commentId, index);
+      }
+    });
+  };
 
   useEffect(() => {
     fetchRestaurant();
@@ -93,7 +127,6 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
                 />
               ))}
 
-              {/* 나머지 개수 (5 - 반올림된 숫자) */}
               {Array.from({
                 length: 5 - Math.round(restaurant?.restaurantStar || 0),
               }).map((_, index) => (
@@ -163,7 +196,9 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
                 </span>
               </div>
               {comment.memberId === memberId && (
-                <button onClick={handleDeleteComment}>
+                <button
+                  onClick={() => handleDeleteComment(comment.commentId, index)}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

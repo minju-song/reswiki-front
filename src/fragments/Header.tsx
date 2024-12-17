@@ -1,6 +1,5 @@
-import "../css/header.css";
-import { useEffect, useState, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SearchComponent from "../components/SearchComponent";
 import { LOCAL_STORAGE_KEYS } from "../constants";
 import { logout } from "../api/member.api";

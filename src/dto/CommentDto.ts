@@ -17,9 +17,16 @@ export interface CommentDto {
   // 리뷰 등록 날짜
   commentDate: Date;
 
+  // 리뷰 이모지
   commentEmoji: CommentEmoji;
 }
 
+// 리뷰 아이디
+export interface CommentIdDto {
+  commentId: number;
+}
+
+// 리뷰 리스트
 export interface ListCommentDto {
   comments: CommentDto[];
   totalElement: number;
@@ -28,12 +35,14 @@ export interface ListCommentDto {
   size: number;
 }
 
+// 리뷰 카테고리
 enum CommentCategory {
   TASTE,
   SERVICE,
   PARKING,
 }
 
+// 리뷰 이모지
 enum CommentEmoji {
   GOOD,
   WELL,

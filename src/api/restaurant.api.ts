@@ -1,3 +1,4 @@
+// 식당 관련 API
 import { ListRestaurantDto, RestaurantDto } from "./../dto/RestaurantDto";
 import { ApiResponse } from "./../dto/ApiResponse";
 import { get, post, del, patch } from "../utils/serverHelper";
@@ -39,6 +40,7 @@ export const getRestaurant = async (
   return ApiResponse;
 };
 
+// 식당 추가
 export const joinRestaurant = async (
   restaurant: RestaurantDto
 ): Promise<ApiResponse<any>> => {

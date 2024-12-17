@@ -7,11 +7,15 @@ import { handleOAuthLogin } from "../../utils/\bsocialUtil";
 
 function Register() {
   const navigate = useNavigate();
+
+  // 이메일 형식
   const emailRegEx =
     /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
+  // 비밀번호 형식
   const passwordRegEx =
     /^(?=.*[a-zA-Z])(?=.*[\d@#$%^&!])([a-zA-Z\d@#$%^&!]{8,64})$/;
 
+  // 각각 만족하는 지 체크
   const [idFlag, setIdFlag] = useState(false);
   const [passwordFlag, setPasswordFlag] = useState(false);
   const [passwordCkFlag, setPasswordCkFlag] = useState(false);
@@ -20,10 +24,12 @@ function Register() {
   const [memberPassword, setMemberPassword] = useState("");
   const [passwordCk, setPasswordCk] = useState("");
 
+  // 이메일 형식 체크
   const emailCheck = async (email: string) => {
     return emailRegEx.test(email);
   };
 
+  // 로그인 이동
   const handleLoginClick = async () => {
     navigate("/login");
   };

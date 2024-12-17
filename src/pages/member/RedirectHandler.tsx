@@ -4,13 +4,10 @@ import { getMyInfo } from "../../api/member.api";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authLogin } from "../../authSlice";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
 
 const RedirectHandler: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
   useEffect(() => {
     const handleGetToken = async () => {

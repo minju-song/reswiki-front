@@ -21,7 +21,7 @@ function Search() {
     const queryParams = new URLSearchParams(location.search);
     const queryValue = queryParams.get("query");
     if (queryValue) {
-      setQuery(queryValue); // 쿼리 값을 상태로 설정
+      setQuery(queryValue);
     }
   }, [location.search]);
 
@@ -78,6 +78,7 @@ function Search() {
     }
   };
 
+  // 구글에서 받은 식당 데이터베이스에 추가
   const addRestaurant = async (r: GoogleSearchDto) => {
     const addressParts = r.formatted_address.split(" ");
     const addr1 = addressParts[0] + " " + addressParts[1];
@@ -101,6 +102,7 @@ function Search() {
     }
   };
 
+  // 식당 입력값 받기
   const searchRestaurant = async () => {
     const token = localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN);
     const memberId = localStorage.getItem(LOCAL_STORAGE_KEYS.MEMBER_ID);

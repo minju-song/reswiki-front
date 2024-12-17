@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-
+// 검색바
 interface SearchComponentProps {
   searchMonter: string; // 검색어
   setSearchMonter: (value: string) => void;

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
 import { getRestaurants } from "../../api/restaurant.api";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -8,36 +7,10 @@ import Card from "../../components/Card";
 import { useMemo } from "react";
 
 function Home() {
-  const mainTitle = useMemo(() => {
-    return `R E S T A U R A N T \nW I K I`;
-  }, []);
-  const [landingTitle, setLandingTitle] = useState("");
-  const [titleIndex, setTitleIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (titleIndex >= mainTitle.length) {
-        clearInterval(interval);
-        return;
-      }
-
-      setLandingTitle((prev) => {
-        let result = prev ? prev + mainTitle[titleIndex] : mainTitle[0];
-
-        setTitleIndex((prev) => prev + 1);
-
-        return result;
-      });
-    }, 200);
-
-    // 컴포넌트 언마운트 시 타이머 클리어
-    return () => clearInterval(interval);
-  }, [mainTitle, titleIndex]);
-
   const [loading, setLoading] = useState(false);
-  const [searchMonter, setSearchMonter] = useState("");
   const [restaurants, setRestaurants] = useState<SimpleRestaurantDto[]>([]);
 
+  // 식당 데이터 받아오기
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -49,12 +22,6 @@ function Home() {
       console.error("데이터 가져오기 실패:", error);
     }
   };
-
-  useEffect(() => {
-    if (searchMonter.trim() === "") {
-      fetchData();
-    }
-  }, [searchMonter]);
 
   useEffect(() => {
     fetchData();

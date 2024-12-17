@@ -1,3 +1,4 @@
+// 회원 관련 API
 import { ApiResponse } from "./../dto/ApiResponse";
 import { get, post, del, patch } from "../utils/serverHelper";
 import { AxiosRequestConfig } from "axios";

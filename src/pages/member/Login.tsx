@@ -14,6 +14,7 @@ function Login() {
   const [memberId, setMemberId] = useState("");
   const [memberPassword, setMemberPassword] = useState("");
 
+  // 회원가입
   const handleRegisterClick = () => {
     navigate("/register");
   };
