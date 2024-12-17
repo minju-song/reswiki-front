@@ -2,9 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login, getMyInfo } from "../../api/member.api";
 import { LOCAL_STORAGE_KEYS } from "../../constants";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { authLogin } from "../../authSlice";
+import { googleLogin } from "../../api/auth.api";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [memberId, setMemberId] = useState("");
   const [memberPassword, setMemberPassword] = useState("");
@@ -22,24 +27,39 @@ function Login() {
     if (memberId !== "" && memberPassword !== "") {
       try {
         const response = await login(memberId, memberPassword);
-        console.log(response);
         if (response.data.success) {
-          console.log("??");
           const accessToken = response.headers["authorization"].split(" ")[1];
           localStorage.setItem(LOCAL_STORAGE_KEYS.TOKEN, accessToken);
-          navigate("/");
-          // getMyInfo().then((response) => {
-          //   if (response.code == 200) {
-          //     localStorage.setItem("logged_id", response.data);
-          //     navigate("/");
-          //   }
-          // });
+          getMyInfo().then((response) => {
+            if (response.code == 200 && response.data?.id) {
+              dispatch(authLogin());
+              localStorage.setItem(
+                LOCAL_STORAGE_KEYS.MEMBER_ID,
+                response.data.id
+              );
+              navigate("/");
+            }
+          });
         }
-      } catch {
-        console.error("에러");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          alert(error.response?.data.message);
+          setMemberId("");
+          setMemberPassword("");
+        }
       }
     } else {
       alert("아이디와 비밀번호 모두 입력해주세요.");
+    }
+  };
+
+  const handleOAuthLogin = async (social: string) => {
+    if (social == "google") {
+      try {
+        const response = await googleLogin();
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -76,7 +96,7 @@ function Login() {
             value={memberId}
             onChange={(e) => setMemberId(e.target.value)}
             className="block p-2.5  w-full text-sm text-primary-dark bg-white rounded-lg  appearance-none "
-            placeholder=" "
+            placeholder="@포함"
           />
         </div>
         <div className="flex flex-col">
@@ -99,7 +119,7 @@ function Login() {
           onClick={handleLoginClick}
           className="bg-[#FCCD2A] my-3 flex items-center justify-center h-[50px] text-sm cursor-pointer text-white font-bold rounded-[0.25rem]"
         >
-          계속하기
+          로그인
         </div>
         <div className="relative flex items-center w-full">
           <div className="flex-grow border-t border-[#C3C8CF]"></div>
@@ -115,10 +135,15 @@ function Login() {
             className="w-9"
             src={`${process.env.PUBLIC_URL}/assets/img/icon/social/naver.svg`}
           />
-          <img
-            className="w-9"
-            src={`${process.env.PUBLIC_URL}/assets/img/icon/social/google.svg`}
-          />
+          <a
+          // href={`${SERVER_URL}/oauth2/authorization/google`}
+          >
+            <img
+              className="w-9"
+              onClick={() => handleOAuthLogin("google")}
+              src={`${process.env.PUBLIC_URL}/assets/img/icon/social/google.svg`}
+            />
+          </a>
         </div>
       </div>
     </div>

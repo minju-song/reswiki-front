@@ -24,7 +24,7 @@ export interface RestaurantDto {
 }
 
 // Restaurant 타입 정의
-export interface Restaurant {
+export interface SimpleRestaurantDto {
   restaurantId: string;
   restaurantName: string;
   restaurantImg: string;
@@ -33,8 +33,8 @@ export interface Restaurant {
   restaurantStar: number;
 }
 
-export interface ListRestaurantResponse {
-  restaurants: Restaurant[];
+export interface ListRestaurantDto {
+  restaurants: SimpleRestaurantDto[];
   totalPages: number;
   totalElements: number;
   number: number;

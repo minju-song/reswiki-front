@@ -103,8 +103,6 @@ function RestaurantPage() {
 
   useEffect(() => {
     if (id) {
-      // id가 유효할 때만 호출
-      console.log("호출");
       fetchRestaurantById(id);
     }
   }, []);

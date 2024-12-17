@@ -5,7 +5,7 @@ import { getRestaurants } from "../../api/restaurant.api";
 import { search } from "../../api/restaurant.api";
 import "swiper/css";
 import "swiper/css/pagination";
-import { Restaurant } from "../../dto/RestaurantDto";
+import { SimpleRestaurantDto } from "../../dto/RestaurantDto";
 import Card from "../../components/Card";
 
 function Home() {
@@ -14,7 +14,7 @@ function Home() {
   const [size, setSize] = useState(10);
   const [loading, setLoading] = useState(false);
   const [searchMonter, setSearchMonter] = useState("");
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [restaurants, setRestaurants] = useState<SimpleRestaurantDto[]>([]);
 
   const fetchData = async () => {
     try {

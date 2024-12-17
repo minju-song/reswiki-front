@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Restaurant } from "../dto/RestaurantDto";
+import { SimpleRestaurantDto } from "../dto/RestaurantDto";
 
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 
-function Card({ restaurant }: { restaurant: Restaurant }) {
+function Card({ restaurant }: { restaurant: SimpleRestaurantDto }) {
   const [cardHover, setCardHover] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
 
@@ -11,7 +11,7 @@ function Card({ restaurant }: { restaurant: Restaurant }) {
     const fetchImage = async () => {
       const fetchImage = async () => {
         try {
-          const url = `${SERVER_URL}/images?imageName=${restaurant.restaurantImg}`;
+          const url = `${API_URL}/images?imageName=${restaurant.restaurantImg}`;
           setImageUrl(url);
         } catch (error) {
           console.error("이미지를 가져오는 중 오류 발생:", error);

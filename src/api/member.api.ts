@@ -1,6 +1,8 @@
 import { ApiResponse } from "./../dto/ApiResponse";
 import { get, post, del, patch } from "../utils/serverHelper";
 import axios, { AxiosRequestConfig } from "axios";
+import { LOCAL_STORAGE_KEYS } from "../constants";
+import { MemberIdDto } from "../dto/MemberDto";
 
 const baseUrl = "/members";
 
@@ -51,19 +53,10 @@ export const login = async (
 };
 
 // 로그아웃
-export const logout = async (): Promise<any> => {
+export const logout = async (): Promise<ApiResponse<any>> => {
   let url = `${baseUrl}/logout`;
 
-  const apiResponse = await post(url);
-
-  return apiResponse;
-};
-
-// 아이디 받아오기
-export const getMyInfo = async (): Promise<ApiResponse<any>> => {
-  let url = `${baseUrl}/myInfo`;
-
-  const accessToken = localStorage.getItem("access_token");
+  const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN);
   const config: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -72,6 +65,23 @@ export const getMyInfo = async (): Promise<ApiResponse<any>> => {
 
   const apiResponse: ApiResponse<any> = (await get(url, config))
     .data as ApiResponse<any>;
+
+  return apiResponse;
+};
+
+// 아이디 받아오기
+export const getMyInfo = async (): Promise<ApiResponse<MemberIdDto>> => {
+  let url = `${baseUrl}/myInfo`;
+
+  const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN);
+  const config: AxiosRequestConfig = {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  const apiResponse: ApiResponse<MemberIdDto> = (await get(url, config))
+    .data as ApiResponse<MemberIdDto>;
 
   return apiResponse;
 };

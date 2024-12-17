@@ -12,7 +12,7 @@ class AxiosService {
 
   private constructor() {
     this.axiosInstance = axios.create({
-      baseURL: process.env.REACT_APP_SERVER_URL,
+      baseURL: process.env.REACT_APP_API_URL,
       // withCredentials: process.env.REACT_APP_MODE === "dev" ? true : false,
       withCredentials: true,
     });

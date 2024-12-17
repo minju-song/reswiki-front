@@ -3,17 +3,22 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import SearchComponent from "../components/SearchComponent";
 import { LOCAL_STORAGE_KEYS } from "../constants";
+import { logout } from "../api/member.api";
+import { RootState } from "../store";
+import { useSelector, useDispatch } from "react-redux";
+import { authLogout } from "../authSlice";
 
 function Header() {
   const navigate = useNavigate();
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
 
   const [searchMonter, setSearchMonter] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // 검색
   const handleSearchPress = async (keyword: string) => {
     if (keyword.trim()) {
       try {
-        console.log(keyword);
         navigate(`/search?query=${encodeURIComponent(keyword)}`);
       } catch (error) {
         console.error("Error fetching search results:", error);
@@ -21,10 +26,17 @@ function Header() {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN);
-    setIsLoggedIn(!!token);
-  }, []);
+  // 로그아웃
+  const handleLogout = async () => {
+    try {
+      const response = await logout();
+      localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN);
+      dispatch(authLogout());
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="header flex pb-5  bg-black border-b border-b-gray-500 justify-between px-[190px]">
@@ -44,7 +56,12 @@ function Header() {
       </div>
       <div className="flex-1 text-white flex items-center p-5">
         {isLoggedIn ? (
-          <span className="text-white">회원</span> // 로그인 상태일 때 표시
+          <button
+            className="button bg-[#FCCD2A] p-2 rounded-lg font-medium"
+            onClick={handleLogout}
+          >
+            로그아웃
+          </button>
         ) : (
           <button
             className="button bg-[#FCCD2A] p-2 rounded-lg font-medium"

@@ -2,12 +2,9 @@ import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { search } from "../../api/restaurant.api";
-import { Restaurant } from "../../dto/RestaurantDto";
+import { SimpleRestaurantDto } from "../../dto/RestaurantDto";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Card from "../../components/Card";
-
-const PHOTO_API_URL = "https://maps.googleapis.com/maps/api/place/photo";
-const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 // 결과 블록
 const ResultDiv = styled.div`
@@ -21,7 +18,7 @@ const Notification = styled.div`
 `;
 
 function Search() {
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [restaurants, setRestaurants] = useState<SimpleRestaurantDto[]>([]);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [loading, setLoading] = useState<boolean>(false);
@@ -62,19 +59,14 @@ function Search() {
     navigate("/restaurant/add");
   };
 
-  // restaurants 상태가 변경될 때마다 실행
-  useEffect(() => {
-    console.log(restaurants.length); // restaurants가 변경될 때마다 길이 출력
-  }, [restaurants]);
+  useEffect(() => {}, [restaurants]);
 
   useEffect(() => {
     const fetchData = async () => {
       if (query) {
-        console.log("검색 ", query);
         setLoading(true); // API 호출 전 로딩 상태 설정
         try {
           const response = await search(query, page, size); // API 호출
-          console.log(response.data);
           if (response.success && response.data) {
             setRestaurants(response.data?.restaurants);
           }

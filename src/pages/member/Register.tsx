@@ -37,11 +37,9 @@ function Register() {
 
   // 아이디 중복 확인
   const handleCheckId = async () => {
-    console.log("입력 이메일", memberId);
     if (await emailCheck(memberId)) {
       try {
         const response = await checkMemberId(memberId);
-        console.log(response);
         if (response.code === 200) {
           alert("사용 가능한 아이디입니다.");
           setIdFlag(true);
@@ -60,7 +58,6 @@ function Register() {
 
   // 비밀번호 형식 확인
   const handleCheckPassword = async () => {
-    console.log(passwordRegEx.test(memberPassword), memberPassword);
     if (passwordRegEx.test(memberPassword)) {
       setPasswordFlag(true);
     } else {
@@ -87,7 +84,6 @@ function Register() {
       try {
         const response = await join(memberId, memberPassword, memberNickname);
         if (response.code === 200) {
-          console.log("회원가입 완료");
           navigate("/login");
         } else console.log("불가");
       } catch {
@@ -101,101 +97,108 @@ function Register() {
   }, [memberId]);
 
   return (
-    <div className="flex items-center justify-center h-full">
-      <div className="flex flex-col w-[20rem] gap-5 text-center">
-        <div className="text-3xl font-bold text-[#2E3339]">계정 만들기</div>
-        <div className="relative">
-          <input
-            type="text"
-            id="memberId"
-            value={memberId}
-            onChange={(e) => setMemberId(e.target.value)}
-            className="px-2.5 pb-2.5 pt-4 w-3/4 text-sm text-primary-dark bg-transparent rounded-lg border border-primary-default appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-          />
-          <label
-            htmlFor="memberId"
-            className="absolute text-sm text-primary-dark duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-          >
-            이메일
-          </label>
-          {idFlag && <IdBtnTrue className="w-1/4">검사 완료</IdBtnTrue>}
-          {!idFlag && (
-            <IdBtnFalse className="w-1/4" onClick={handleCheckId}>
-              중복 검사
-            </IdBtnFalse>
-          )}
+    <div className="flex items-center justify-center h-full body">
+      <div className="flex flex-col w-[26rem] gap-5 text-center py-[40px] px-[32px] bg-[#222222] rounded-2xl">
+        <div className="flex justify-between items-center">
+          <div className="text-white text-left font-normal text-base">
+            회원가입을
+            <br />
+            진행해주세요<span className="emoji">🥳</span>
+          </div>
+          <div className="text-right text-[#8D8D8D] text-sm">
+            회원이신가요?
+            <br />
+            <button className="text-[#FCCD2A]" onClick={handleRegisterClick}>
+              로그인
+            </button>
+          </div>
         </div>
-        <div className="relative">
+        <div className="flex flex-col">
+          <label
+            className="w-full text-left text-white text-xs font-thin pb-1"
+            htmlFor="loginId"
+          >
+            이메일을 입력해주세요.
+          </label>
+          <div className="flex">
+            <input
+              type="text"
+              id="loginId"
+              value={memberId}
+              onChange={(e) => setMemberId(e.target.value)}
+              className="block p-2.5  w-3/4 text-sm text-primary-dark bg-white rounded-lg  appearance-none "
+              placeholder="@포함"
+            />
+            <div className="w-1/4 flex items-center justify-end">
+              <button className="bg-[#FCCD2A] p-2 flex  text-sm cursor-pointer text-white font-bold rounded-[0.25rem]">
+                중복확인
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <label
+            className="w-full text-left text-white text-xs font-thin pb-1"
+            htmlFor="password"
+          >
+            비밀번호를 입력해주세요.
+          </label>
           <input
             type="password"
-            id="memberPassword"
+            id="password"
             value={memberPassword}
             onChange={(e) => setMemberPassword(e.target.value)}
-            onBlur={handleCheckPassword}
-            className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-primary-dark bg-transparent rounded-lg border border-primary-default appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            className="block p-2.5 w-full text-sm text-primary-dark bg-white rounded-lg  appearance-none"
             placeholder=" "
           />
-          <label
-            htmlFor="memberPassword"
-            className="absolute text-sm text-primary-dark duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-          >
-            비밀번호
-          </label>
         </div>
-        <div className="relative">
+        <div className="flex flex-col">
+          <label
+            className="w-full text-left text-white text-xs font-thin pb-1"
+            htmlFor="password"
+          >
+            비밀번호를 한번 더 입력해주세요.
+          </label>
           <input
             type="password"
             id="passwordCk"
             value={passwordCk}
             onChange={(e) => setPasswordCk(e.target.value)}
             onBlur={handleCheckCkPassword}
-            className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-primary-dark bg-transparent rounded-lg border border-primary-default appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            className="block p-2.5 w-full text-sm text-primary-dark bg-white rounded-lg  appearance-none"
             placeholder=" "
           />
-          <label
-            htmlFor="passwordCk"
-            className="absolute text-sm text-primary-dark duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-          >
-            비밀번호 확인
-          </label>
         </div>
-        <div className="relative">
-          <input
-            type="text"
-            id="memberNickname"
-            value={memberNickname}
-            onChange={(e) => setMemberNickname(e.target.value)}
-            className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-primary-dark bg-transparent rounded-lg border border-primary-default appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-          />
-          <label
-            htmlFor="memberNickname"
-            className="absolute text-sm text-primary-dark duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-          >
-            닉네임
-          </label>
-        </div>
+
         <div
-          className="flex items-center justify-center h-[50px] text-sm cursor-pointer text-green-700 font-bold bg-primary-default rounded-[0.25rem]"
+          className="bg-[#FCCD2A] my-3 flex items-center justify-center h-[50px] text-sm cursor-pointer text-white font-bold rounded-[0.25rem]"
           onClick={handleRegisterClick}
         >
-          계속하기
+          회원가입
         </div>
         <div className="relative flex items-center w-full">
           <div className="flex-grow border-t border-[#C3C8CF]"></div>
-          <span className="mx-4 text-[#2E3339]">또는</span>
+          <span className="mx-4 text-white">OR</span>
           <div className="flex-grow border-t border-[#C3C8CF]"></div>
         </div>
-        <div className="flex flex-col gap-4 font-bold text-sm text-primary-default">
-          <div>
-            <span className="font-medium text-[#2E3339]">
-              이미 계정이 있으신가요?
-            </span>
-            <span className="cursor-pointer" onClick={handleLoginClick}>
-              로그인
-            </span>
-          </div>
+        <div className="relative flex items-center justify-center w-full gap-4">
+          <img
+            className="w-9"
+            src={`${process.env.PUBLIC_URL}/assets/img/icon/social/kakao.svg`}
+          />
+          <img
+            className="w-9"
+            src={`${process.env.PUBLIC_URL}/assets/img/icon/social/naver.svg`}
+          />
+          <a
+          // href={`${SERVER_URL}/oauth2/authorization/google`}
+          >
+            <img
+              className="w-9"
+              // onClick={() => handleOAuthLogin("google")}
+              src={`${process.env.PUBLIC_URL}/assets/img/icon/social/google.svg`}
+            />
+          </a>
         </div>
       </div>
     </div>
