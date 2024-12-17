@@ -93,28 +93,11 @@ function Search() {
               </div>
             </div>
             <div className="w-full   p-5">
-              <Swiper
-                spaceBetween={3}
-                onSlideChange={(swiper: any) => setPage(swiper.activeIndex)}
-              >
-                {/* 슬라이드 수 계산 */}
-                {Array.from({
-                  length: Math.ceil(restaurants.length / itemsPerPage),
-                }).map((_, index) => (
-                  <SwiperSlide key={index}>
-                    <div className="grid grid-cols-4 gap-4">
-                      {restaurants
-                        .slice(
-                          index * itemsPerPage,
-                          index * itemsPerPage + itemsPerPage
-                        )
-                        .map((item) => (
-                          <Card key={item.restaurantId} restaurant={item} />
-                        ))}
-                    </div>
-                  </SwiperSlide>
+              <div className="grid grid-cols-4 gap-4">
+                {restaurants.slice(0, 8).map((item) => (
+                  <Card key={item.restaurantId} restaurant={item} />
                 ))}
-              </Swiper>
+              </div>
             </div>
           </div>
         ) : (

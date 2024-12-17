@@ -1,6 +1,6 @@
 import { ApiResponse } from "./../dto/ApiResponse";
 import { get, post, del, patch } from "../utils/serverHelper";
-import axios, { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 import { LOCAL_STORAGE_KEYS } from "../constants";
 import { MemberIdDto } from "../dto/MemberDto";
 

@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { SimpleRestaurantDto } from "../dto/RestaurantDto";
+import RestaurantModal from "./RestaurantModal";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 function Card({ restaurant }: { restaurant: SimpleRestaurantDto }) {
   const [cardHover, setCardHover] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -24,11 +26,20 @@ function Card({ restaurant }: { restaurant: SimpleRestaurantDto }) {
     fetchImage(); // 이미지 요청
   }, [restaurant.restaurantImg]);
 
+  const openModal = () => {
+    setIsModalOpen(true); // 모달 열기
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false); // 모달 닫기
+  };
+
   return (
     <div
       className="relative h-[230px] rounded-3xl perspective"
       onMouseEnter={() => setCardHover(true)} // 마우스가 카드에 들어올 때
       onMouseLeave={() => setCardHover(false)} // 마우스가 카드에서 나갈 때
+      onClick={openModal}
     >
       {cardHover ? (
         <div className="bg-[#FCCD2A] py-3 px-[14px]  h-full rounded-3xl absolute inset-0 transition-transform duration-700 transform">
@@ -52,6 +63,13 @@ function Card({ restaurant }: { restaurant: SimpleRestaurantDto }) {
             backfaceVisibility: "hidden", // 앞면이 보이지 않도록 설정
           }}
         ></div>
+      )}
+      {isModalOpen && (
+        <RestaurantModal
+          isOpen={isModalOpen}
+          restaurantId={restaurant.restaurantId}
+          onClose={closeModal}
+        />
       )}
     </div>
   );

@@ -31,6 +31,7 @@ function Header() {
     try {
       const response = await logout();
       localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN);
+      localStorage.removeItem(LOCAL_STORAGE_KEYS.MEMBER_ID);
       dispatch(authLogout());
       navigate("/");
     } catch (error) {

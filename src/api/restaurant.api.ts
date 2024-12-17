@@ -1,4 +1,4 @@
-import { ListRestaurantDto } from "./../dto/RestaurantDto";
+import { ListRestaurantDto, RestaurantDto } from "./../dto/RestaurantDto";
 import { ApiResponse } from "./../dto/ApiResponse";
 import { get, post, del, patch } from "../utils/serverHelper";
 
@@ -8,13 +8,14 @@ const baseUrl = "/restaurants";
 export const getRestaurants = async (): Promise<
   ApiResponse<ListRestaurantDto>
 > => {
-  const url = `${baseUrl}?size=10&page=0`;
+  const url = `${baseUrl}?size=8&page=0`;
   const apiResponse: ApiResponse<ListRestaurantDto> = (await get(url))
     .data as ApiResponse<ListRestaurantDto>;
 
   return apiResponse;
 };
 
+// 검색
 export const search = async (
   keyword: string,
   page: number,
@@ -27,11 +28,13 @@ export const search = async (
   return ApiResponse;
 };
 
-// 상세 페이지 - pre
-export const getRestaurant = async (id: string): Promise<ApiResponse<any>> => {
-  const url = `${baseUrl}/getRestaurant?id=${id}`;
-  const ApiResponse: ApiResponse<any> = (await get(url))
-    .data as ApiResponse<any>;
+// 상세 정보
+export const getRestaurant = async (
+  id: string
+): Promise<ApiResponse<RestaurantDto>> => {
+  const url = `${baseUrl}/${id}`;
+  const ApiResponse: ApiResponse<RestaurantDto> = (await get(url))
+    .data as ApiResponse<RestaurantDto>;
 
   return ApiResponse;
 };

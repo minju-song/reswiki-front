@@ -94,7 +94,7 @@ function RestaurantPage() {
     try {
       const result = (await getRestaurant(id)).data;
       setRestaurant(result);
-      setReviews(result.reviews);
+      // setReviews(result.reviews);
       setLoading(false);
     } catch (error) {
       console.error("데이터 가져오기 실패:", error);

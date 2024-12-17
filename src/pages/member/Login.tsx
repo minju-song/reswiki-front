@@ -104,7 +104,9 @@ function Login() {
         <div
           onClick={handleLoginClick}
           className="bg-[#FCCD2A] my-3 flex items-center justify-center h-[50px] text-sm cursor-pointer text-white font-bold rounded-[0.25rem]"
-        ></div>
+        >
+          로그인
+        </div>
         <div className="relative flex items-center w-full">
           <div className="flex-grow border-t border-[#C3C8CF]"></div>
           <span className="mx-4 text-white">OR</span>
