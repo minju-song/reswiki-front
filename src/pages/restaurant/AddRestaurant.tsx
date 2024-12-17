@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { search } from "../../api/googleMap.api";
+import { googleSearch } from "../../api/googlePlace.api";
 import SearchComponent from "../../components/SearchComponent";
 
 const PHOTO_API_URL = "https://maps.googleapis.com/maps/api/place/photo";
@@ -83,27 +83,25 @@ function AddRestaurant() {
 
     setLoading(true);
     setError(null);
-    console.log(searchMonter);
 
     try {
       // 검색어 입력하면 값 받아옴
-      const response = await search(searchMonter);
-      if (
-        response.types.includes("food") ||
-        response.types.includes("restaurant") ||
-        response.types.includes("cafe")
-      ) {
-        setRestaurant(response);
-        console.log(response);
-        setImageUrl(response.photos[0].photo_reference);
-        if (response.business_status == "OPERATIONAL") {
-          setBusinessStatus(true);
-        } else setBusinessStatus(false);
-      } else {
-        setRestaurant(null);
-        setImageUrl("");
-        setBusinessStatus(false);
-      }
+      const response = await googleSearch(searchMonter);
+      // if (
+      //   response.types.includes("food") ||
+      //   response.types.includes("restaurant") ||
+      //   response.types.includes("cafe")
+      // ) {
+      //   setRestaurant(response);
+      //   setImageUrl(response.photos[0].photo_reference);
+      //   if (response.business_status == "OPERATIONAL") {
+      //     setBusinessStatus(true);
+      //   } else setBusinessStatus(false);
+      // } else {
+      //   setRestaurant(null);
+      //   setImageUrl("");
+      //   setBusinessStatus(false);
+      // }
     } catch (err) {
       setError(err);
       console.log(err);
@@ -125,9 +123,6 @@ function AddRestaurant() {
   };
 
   const addReview = () => {
-    console.log(reviewItem, " ", reviewContents);
-    console.log(restaurantDto);
-
     setRestaurantDto({ ...restaurantDto, restaurantId: restaurant.place_id });
     setRestaurantDto({ ...restaurantDto, restaurantName: restaurant.name });
     setRestaurantDto({ ...restaurantDto, restaurantImg: imageUrl });
@@ -135,8 +130,6 @@ function AddRestaurant() {
       ...restaurantDto,
       restaurantAddr1: restaurant.formatted_address,
     });
-
-    console.log(restaurantDto);
   };
 
   return (

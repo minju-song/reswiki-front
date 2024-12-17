@@ -23,22 +23,22 @@ function Card({ restaurant }: { restaurant: SimpleRestaurantDto }) {
       fetchImage();
     };
 
-    fetchImage(); // 이미지 요청
+    fetchImage();
   }, [restaurant.restaurantImg]);
 
   const openModal = () => {
-    setIsModalOpen(true); // 모달 열기
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setIsModalOpen(false); // 모달 닫기
+    setIsModalOpen(false);
   };
 
   return (
     <div
       className="relative h-[230px] rounded-3xl perspective"
-      onMouseEnter={() => setCardHover(true)} // 마우스가 카드에 들어올 때
-      onMouseLeave={() => setCardHover(false)} // 마우스가 카드에서 나갈 때
+      onMouseEnter={() => setCardHover(true)}
+      onMouseLeave={() => setCardHover(false)}
       onClick={openModal}
     >
       {cardHover ? (
@@ -60,7 +60,7 @@ function Card({ restaurant }: { restaurant: SimpleRestaurantDto }) {
             backgroundImage: `url(${imageUrl})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            backfaceVisibility: "hidden", // 앞면이 보이지 않도록 설정
+            backfaceVisibility: "hidden",
           }}
         ></div>
       )}

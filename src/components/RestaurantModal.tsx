@@ -23,6 +23,7 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
   const [page, setPage] = useState(1);
   const memberId = localStorage.getItem(LOCAL_STORAGE_KEYS.MEMBER_ID);
 
+  // 가게 정보 받아오기
   const fetchRestaurant = async () => {
     try {
       const response = await getRestaurant(restaurantId);
@@ -32,6 +33,7 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
     } catch (error) {}
   };
 
+  // 해당 식당 코멘트 받아오기
   const fetchComments = async () => {
     try {
       const response = await getComments(restaurantId, page);
@@ -40,6 +42,8 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
       }
     } catch (error) {}
   };
+
+  const handleDeleteComment = async () => {};
 
   useEffect(() => {
     fetchRestaurant();
@@ -126,7 +130,7 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
               </div>
               <div
                 className={`flex flex-col rounded-lg 
-              ${comment.memberId === memberId ? "bg-gray-400" : "bg-[#FCCD2A]"}
+              ${comment.memberId === memberId ? "bg-white" : "bg-[#FCCD2A]"}
               
                text-black p-2 gap-1 max-w-52`}
               >
@@ -146,7 +150,7 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
                     })} ${date.toLocaleTimeString("ko-KR", {
                       hour: "2-digit",
                       minute: "2-digit",
-                      hour12: false, // 24시간 형식
+                      hour12: false,
                     })}`;
                   })()}
                 </div>
@@ -159,7 +163,7 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
                 </span>
               </div>
               {comment.memberId === memberId && (
-                <button>
+                <button onClick={handleDeleteComment}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

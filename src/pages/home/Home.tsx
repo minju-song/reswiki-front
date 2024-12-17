@@ -15,27 +15,17 @@ function Home() {
   const [titleIndex, setTitleIndex] = useState(0);
 
   useEffect(() => {
-    console.log(titleIndex);
-
     const interval = setInterval(() => {
-      // 만약, titleIndex가 mainTitle의 길이와 같거나 커지면 반복을 멈춘다.
       if (titleIndex >= mainTitle.length) {
-        clearInterval(interval); // 타이머 클리어
+        clearInterval(interval);
         return;
       }
 
       setLandingTitle((prev) => {
-        console.log(prev);
-        // 빈 문자열("")은 false이므로 mainTitle의 가장 앞 글자가 prev에 할당된다.
-        // 그 뒤로는 landingTitle이 빈 문자열이 아니므로
-        // 이전에 존재하던 것과 titleIndex에 존재하는 문자열을 합쳐서
-        // 다시 result에 할당한다.
         let result = prev ? prev + mainTitle[titleIndex] : mainTitle[0];
 
-        // titleIndex를 증가시킨다.
         setTitleIndex((prev) => prev + 1);
 
-        // 연산된 result를 반환한다.
         return result;
       });
     }, 200);

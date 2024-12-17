@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 
-// 프롭스 타입 정의
 interface SearchComponentProps {
   searchMonter: string; // 검색어
   setSearchMonter: (value: string) => void;
-  onKeyPress: (keyword: string) => void; // 검색 함수 타입
+  onKeyPress: (keyword: string) => void;
 }
 
 const SearchComponent: React.FC<SearchComponentProps> = ({
@@ -16,7 +15,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
     if (event.key === "Enter") {
       const keyword = searchMonter.trim();
       if (keyword) {
-        onKeyPress(keyword); // 검색어를 전달
+        onKeyPress(keyword);
       }
     }
   };

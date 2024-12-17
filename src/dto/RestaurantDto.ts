@@ -23,7 +23,6 @@ export interface RestaurantDto {
   restaurantStar: number;
 }
 
-// Restaurant 타입 정의
 export interface SimpleRestaurantDto {
   restaurantId: string;
   restaurantName: string;
@@ -44,4 +43,14 @@ export interface ListRestaurantDto {
 export interface RestaurantAndReviews {
   restaurants: RestaurantDto;
   reviews: ReviewDto[];
+}
+
+export interface GoogleSearchDto {
+  formatted_address: string;
+  formatted_phone_number: string;
+  name: string;
+  opening_hours: any;
+  photos: any;
+  place_id: string;
+  type: any;
 }

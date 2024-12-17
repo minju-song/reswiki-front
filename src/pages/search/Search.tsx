@@ -1,21 +1,12 @@
-import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { search } from "../../api/restaurant.api";
+import { search, joinRestaurant } from "../../api/restaurant.api";
 import { SimpleRestaurantDto } from "../../dto/RestaurantDto";
-import { Swiper, SwiperSlide } from "swiper/react";
 import Card from "../../components/Card";
-
-// 결과 블록
-const ResultDiv = styled.div`
-  padding: 2rem;
-`;
-
-// 알림문 글자
-const Notification = styled.div`
-  margin: 1rem 0;
-  text-align: center;
-`;
+import Swal, { SweetAlertResult } from "sweetalert2";
+import { googleSearch } from "../../api/googlePlace.api";
+import { LOCAL_STORAGE_KEYS } from "../../constants";
+import { GoogleSearchDto } from "../../dto/RestaurantDto";
 
 function Search() {
   const [restaurants, setRestaurants] = useState<SimpleRestaurantDto[]>([]);
@@ -24,7 +15,7 @@ function Search() {
   const [loading, setLoading] = useState<boolean>(false);
   const location = useLocation();
   const [query, setQuery] = useState<string>("");
-  const itemsPerPage = 8; // 한 페이지에 8개 카드
+  const Swal = require("sweetalert2");
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -36,27 +27,105 @@ function Search() {
 
   const navigate = useNavigate();
 
-  // search api 실행
-  const searchRes2 = async (m: string) => {
+  // 구글 api 실행
+  const handleGoogle = async (keyword: string) => {
     setLoading(true);
+
     try {
-      const response = await search(m, page, size);
-      if (response.success && response.data) {
-        setRestaurants(response.data.restaurants);
+      const response = await googleSearch(keyword);
+
+      // api 검색 결과 있을 때
+      if (response.success) {
+        const r = response.data;
+        Swal.fire({
+          title: `<div class="emoji">🍽️</div>${r?.name}`,
+          text: "맞으신가요?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "맞아요!",
+          cancelButtonText: "아니요..",
+        }).then((result: SweetAlertResult) => {
+          // 검색한 결과가 옳을때
+          if (result.isConfirmed) {
+            if (r) {
+              addRestaurant(r);
+            }
+          } else {
+            searchRestaurant();
+          }
+        });
+      } else {
+        Swal.fire({
+          title: `찾을 수 없는 가게입니다<span class='emoji'>😢</span>`,
+          text: "다시 검색해주세요",
+          icon: "error",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "네!",
+          cancelButtonText: "싫어요..",
+        }).then((result: SweetAlertResult) => {
+          if (result.isConfirmed) {
+            searchRestaurant();
+          }
+        });
       }
       setLoading(false);
-    } catch {
-      console.error("검색 실패");
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  // 상세 페이지 이동
-  const restaurantPage = (id: string) => {
-    navigate(`/restaurant/${id}`);
+  const addRestaurant = async (r: GoogleSearchDto) => {
+    const addressParts = r.formatted_address.split(" ");
+    const addr1 = addressParts[0] + " " + addressParts[1];
+    const addr2 = addressParts[2] + " " + addressParts[3];
+    const body = {
+      restaurantId: r.place_id,
+      restaurantName: r.name,
+      restaurantTel: r.formatted_phone_number,
+      restaurantImg: r.photos[0].photo_reference,
+      restaurantAddr1: addr1,
+      restaurantAddr2: addr2,
+      restaurantStar: 0,
+    };
+    try {
+      const response = await joinRestaurant(body);
+      if (response.code === 201) {
+        navigate(`/search?query=${encodeURIComponent(r.name)}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const addRestaurant = () => {
-    navigate("/restaurant/add");
+  const searchRestaurant = async () => {
+    const token = localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN);
+    const memberId = localStorage.getItem(LOCAL_STORAGE_KEYS.MEMBER_ID);
+    if (token && memberId) {
+      const { value: restaurantName } = await Swal.fire({
+        title: "추가할 식당 이름을 입력해주세요.",
+        input: "text",
+        inputLabel: "(현재는 식당 포함 모든 가게 검색)",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "완료",
+        cancelButtonText: "취소",
+        inputValidator: (value: string) => {
+          if (!value) {
+            return "식당 이름을 입력해주세요.";
+          } else {
+            handleGoogle(value);
+          }
+        },
+      });
+    } else {
+      alert("로그인 후 이용할 수 있습니다.");
+      navigate("/login");
+    }
   };
 
   useEffect(() => {}, [restaurants]);
@@ -83,8 +152,8 @@ function Search() {
 
   return (
     <div className="body">
-      <ResultDiv>
-        {loading && <Notification>로 딩 중</Notification>}
+      <div className="p-8">
+        {loading && <div className="mx-4 text-center">로 딩 중</div>}
         {restaurants.length > 0 ? (
           <div className="">
             <div className="w-full h-9 flex justify-between">
@@ -101,38 +170,19 @@ function Search() {
             </div>
           </div>
         ) : (
-          // <div>
-          //   {restaurants.map((item, index) => (
-          //     <div
-          //       key={item.restaurantId}
-          //       className="card card-side bg-base-100 shadow-xl"
-          //       style={{ maxHeight: "10rem", marginBottom: "1rem" }}
-          //       onClick={() => restaurantPage(item.restaurantId)}
-          //     >
-          //       <figure>
-          //         <img
-          //           src={
-          //             PHOTO_API_URL +
-          //             `?photo_reference=${item.restaurantImg}&maxheight=100&key=${API_KEY}`
-          //           }
-          //           alt={item.restaurantName}
-          //           style={{ height: "100%" }}
-          //         />
-          //       </figure>
-          //       <div className="card-body">
-          //         <h2 className="card-title">{item.restaurantName}</h2>
-          //         <p>{item.restaurantAddr1}</p>
-          //         <div className="card-actions justify-end"></div>
-          //       </div>
-          //     </div>
-          //   ))}
-          // </div>
-          <Notification>
-            <span>검색 결과가 없습니다.</span>
-            <button onClick={addRestaurant}>추가</button>
-          </Notification>
+          <div className="mx-4 text-center">
+            <div className="text-white text-lg font-bold p-6">
+              검색 결과가 없습니다<span className="emoji">💦</span>
+            </div>
+            <button
+              className="rounded-lg bg-[#FCCD2A] p-2"
+              onClick={searchRestaurant}
+            >
+              가게 추가
+            </button>
+          </div>
         )}
-      </ResultDiv>
+      </div>
     </div>
   );
 }

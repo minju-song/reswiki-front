@@ -33,7 +33,6 @@ function Register() {
     if (await emailCheck(memberId)) {
       try {
         const response = await checkMemberId(memberId);
-        console.log(response);
         if (response.code === 200) {
           alert("사용 가능한 아이디입니다.");
           setIdFlag(true);
@@ -84,7 +83,6 @@ function Register() {
     if (idFlag && passwordFlag && passwordCkFlag) {
       try {
         const response = await join(memberId, memberPassword);
-        console.log(response);
         if (response.code === 201) {
           navigate("/login");
         } else console.log("불가");

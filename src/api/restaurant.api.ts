@@ -38,3 +38,14 @@ export const getRestaurant = async (
 
   return ApiResponse;
 };
+
+export const joinRestaurant = async (
+  restaurant: RestaurantDto
+): Promise<ApiResponse<any>> => {
+  const url = `${baseUrl}`;
+  const body = restaurant;
+
+  const apiResponse: ApiResponse<any> = (await post(url, body))
+    .data as ApiResponse<any>;
+  return apiResponse;
+};

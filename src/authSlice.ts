@@ -1,12 +1,21 @@
 // authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { LOCAL_STORAGE_KEYS } from "./constants";
 
 interface AuthState {
   isLoggedIn: boolean;
 }
 
+const getInitialLoginState = (): boolean => {
+  const token = localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN);
+  const memberId = localStorage.getItem(LOCAL_STORAGE_KEYS.MEMBER_ID);
+  if (token && memberId) {
+    return true;
+  } else return false;
+};
+
 const initialState: AuthState = {
-  isLoggedIn: false,
+  isLoggedIn: getInitialLoginState(),
 };
 
 const authSlice = createSlice({
